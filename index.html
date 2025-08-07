@@ -15,6 +15,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
+            overflow: hidden;
+            position: relative;
         }
         header {
             background-color: #333;
@@ -37,6 +39,8 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             animation: fadeIn 1s ease-in-out;
+            position: relative;
+            z-index: 10;
         }
         .message {
             padding: 10px;
@@ -84,6 +88,27 @@
         @keyframes fadeInMessage {
             0% { opacity: 0; transform: translateY(10px); }
             100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animação de partículas */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: #3498db;
+            opacity: 0.5;
+            pointer-events: none;
+            animation: particleAnimation 5s infinite;
+        }
+
+        @keyframes particleAnimation {
+            0% {
+                transform: translate3d(0, 0, 0);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate3d(calc(100vw * random()), calc(100vh * random()), 0);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -146,12 +171,39 @@
         </div>
 
         <div class="message message-user" style="text-align:center;">
-            <button class="button">Abrir Novo Portal</button>
+            <button class="button" onclick="playSound('portal')">Abrir Novo Portal</button>
         </div>
     </div>
 
     <footer>
         <p>&copy; 2025 CODÉX - AxéKode Prime. Todos os direitos reservados.</p>
     </footer>
+
+    <!-- Animação de Partículas -->
+    <script>
+        // Função para criar partículas
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.width = `${Math.random() * 10 + 5}px`; // Aleatório entre 5px e 15px
+            particle.style.height = particle.style.width;
+            document.body.appendChild(particle);
+            setTimeout(() => {
+                particle.remove();
+            }, 5000); // Tempo de vida da partícula
+        }
+
+        // Gerar partículas constantemente
+        setInterval(createParticle, 100); // Uma partícula a cada 100ms
+
+        // Função para tocar o som
+        function playSound(type) {
+            let audio = new Audio();
+            if (type === 'portal') {
+                audio.src = 'https://www.soundjay.com/button/beep-07.wav'; // Exemplo de som
+                audio.play();
+            }
+        }
+    </script>
 </body>
 </html>
